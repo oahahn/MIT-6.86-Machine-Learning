@@ -1,6 +1,6 @@
 ## Project Objectives
 
-The goal of this project is to design a classifier to use for sentiment analysis of product reviews. Our training set consists of reviews written by Amazon customers for various food products. 
+The goal of this project is to design a classifier to use for sentiment analysis of product reviews. The training set consists of reviews written by Amazon customers for various food products. 
 
 In order to automatically analyze reviews, you will need to complete the following tasks:
 
