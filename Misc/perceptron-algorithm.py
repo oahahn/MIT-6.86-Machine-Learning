@@ -48,13 +48,6 @@ def perceptron(x, y, t):
             break
     return theta_updates, theta0_updates, mistakes, theta, theta0
 
-
-'''
-x1 = np.array([[-1, -1], [1, 0], [-1, 10]])
-x2 = np.array([[1, 0], [-1, 10], [-1, -1]])
-y1 = np.array([1, -1, 1])
-y2 = np.array([-1, 1, 1])
-'''
 x = np.array([[-4, 2], [-2, 1], [-1, -1], [2, 2], [1, -2]])
 y = np.array([1, 1, -1, -1, -1])
 index1 = np.array([1, 2, 3, 4, 0])
