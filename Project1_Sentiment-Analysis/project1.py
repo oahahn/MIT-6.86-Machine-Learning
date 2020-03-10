@@ -280,8 +280,16 @@ def classify(feature_matrix, theta, theta_0):
     given theta and theta_0. If a prediction is GREATER THAN zero, it should
     be considered a positive classification.
     """
-    # Your code here
-    raise NotImplementedError
+    nsamples, nfeatures = feature_matrix.shape
+    prediction_vector = np.zeros(nsamples)
+    for i in range(nsamples):
+        feature_vector = feature_matrix[i]
+        prediction = np.dot(feature_vector, theta) + theta_0
+        if (prediction > 0):
+            prediction_vector[i] = 1
+        else:
+            prediction_vector[i] = -1
+    return prediction_vector
 #pragma: coderesponse end
 
 
@@ -318,8 +326,22 @@ def classifier_accuracy(
     trained classifier on the training data and the second element is the
     accuracy of the trained classifier on the validation data.
     """
-    # Your code here
-    raise NotImplementedError
+    #calculate theta and theta_0 values for the classification function
+    theta, theta_0 = classifier(train_feature_matrix, train_labels, **kwargs)
+
+    #use these values to create a vector of prediction labels
+    train_predictions = classify(train_feature_matrix, theta, theta_0)
+
+    #create a vector of with validation predictions
+    val_predictions = classify(val_feature_matrix, theta, theta_0)
+
+    #compare the training predictions to the training labels
+    train_accuracy = accuracy(train_predictions, train_labels)
+
+    #compare the validation predictions to the validation labels
+    validation_accuracy = accuracy(val_predictions, val_labels)
+
+    return train_accuracy, validation_accuracy
 #pragma: coderesponse end
 
 
