@@ -26,7 +26,7 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 
 # toy_features, toy_labels = toy_data = utils.load_toy_data('toy_data.tsv')
 #
-# T = 10
+# T = 10000
 # L = 0.2
 #
 # thetas_perceptron = p1.perceptron(toy_features, toy_labels, T)
@@ -105,7 +105,16 @@ test_bow_features = p1.extract_bow_feature_vectors(test_texts, dictionary)
 # test_bow_features and test_labels.
 #-------------------------------------------------------------------------------
 
-# Your code here
+#learn theta and theta_0 from the training data
+theta, theta_0 = p1.pegasos(train_bow_features, train_labels, 25, 0.01)
+
+#create a prediction vector from the test data
+prediction_vector = p1.classify(test_bow_features, theta, theta_0)
+
+#calculate the accuracy on the test data
+test_accuracy = p1.accuracy(prediction_vector, test_labels)
+
+print("Accuracy on the test set: {:.3f}".format(test_accuracy))
 
 #-------------------------------------------------------------------------------
 # Assign to best_theta, the weights (and not the bias!) learned by your most
