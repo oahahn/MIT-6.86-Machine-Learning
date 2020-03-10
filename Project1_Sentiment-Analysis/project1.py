@@ -368,12 +368,16 @@ def bag_of_words(texts):
 
     Feel free to change this code as guided by Problem 9
     """
-    # Your code here
+    #use context manager to open file
+    with open('stopwords.txt', 'r') as stopwords:
+        stopwords_contents = stopwords.read()
+        stopwords_contents = stopwords_contents.replace("\n", " ").split()
+
     dictionary = {} # maps word to unique index
     for text in texts:
         word_list = extract_words(text)
         for word in word_list:
-            if word not in dictionary:
+            if word not in dictionary and word not in stopwords_contents:
                 dictionary[word] = len(dictionary)
     return dictionary
 #pragma: coderesponse end
@@ -399,7 +403,7 @@ def extract_bow_feature_vectors(reviews, dictionary):
         word_list = extract_words(text)
         for word in word_list:
             if word in dictionary:
-                feature_matrix[i, dictionary[word]] = 1
+                feature_matrix[i, dictionary[word]] += 1 #changed binary update to counts
     return feature_matrix
 #pragma: coderesponse end
 
