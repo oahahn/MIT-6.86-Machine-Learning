@@ -12,7 +12,7 @@ Part of the code for this project was written by the course staff. My tasks were
 
 * Perform dimensionality reduction using PCA by projecting the data onto the principal components and explore the effects on performance. This was implemented in features.py and tested in main.py.
 
-* Implement a direct mapping to the high-dimensional features using a cubic feature mapping and understand understand how it is inefficient for this task. This can also be seen in features.py.
+* Implement a direct mapping to the high-dimensional features using a cubic feature mapping and understand how this approach is inefficient for the task. This can also be seen in features.py.
 
 * Write a polynomial kernel function and a Gaussian RBF kernel function to map the features into d dimensional polynomial space and calculate the change in the test error. This was implemented in kernel.py and tested in main.py.
 
