@@ -17,11 +17,11 @@ def project_onto_PC(X, pcs, n_components, feature_means):
     #       Note that each eigenvector is already be a unit-vector,
     #       so the projection may be done using matrix multiplication.
 
-    X_centered = center_data(X)
+    X_centered = X - feature_means
     # Choose top n eigenvectors from V'
-    V = pcs[:, 0 : n_components]
+    V = pcs[:, 0:n_components]
     # Project the data onto the principal components
-    projection = X_centered @ V
+    projection = np.dot(X_centered, V)
     return projection
 
 
@@ -159,3 +159,23 @@ def reconstruct_PC(x_pca, pcs, n_components, X):
     feature_means = feature_means[0, :]
     x_reconstructed = np.dot(x_pca, pcs[:, range(n_components)].T) + feature_means
     return x_reconstructed
+
+def polynomial_kernel(X, Y, c, p):
+    """
+        Compute the polynomial kernel between two matrices X and Y::
+            K(x, y) = (<x, y> + c)^p
+        for each pair of rows x in X and y in Y.
+
+        Args:
+            X - (n, d) NumPy array (n datapoints each with d features)
+            Y - (m, d) NumPy array (m datapoints each with d features)
+            c - a coefficient to trade off high-order and low-order terms (scalar)
+            p - the degree of the polynomial kernel
+
+        Returns:
+            kernel_matrix - (n, m) Numpy array containing the kernel matrix
+    """
+    K = X @ Y.T
+    K += c
+    K **= p
+    return K
