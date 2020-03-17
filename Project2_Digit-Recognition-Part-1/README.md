@@ -10,7 +10,7 @@ Part of the code for this project was written by the course staff. My tasks were
 
 * Implement your own softmax regression using gradient descent. This was implemented in softmax.py and tested in main.py.
 
-* Experiment with different hyperparameters, different labels and different features, including kernelized features. This can again be seen in softmax.py and main.py.
+* Experiment with different hyperparameters and labels. This can again be seen in softmax.py and main.py.
 
 * Perform dimensionality reduction using PCA by projecting the data onto the principal components and explore the effects on performance. This was implemented in features.py and tested in main.py.
 
