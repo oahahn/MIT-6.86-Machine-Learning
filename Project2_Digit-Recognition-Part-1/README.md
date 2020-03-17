@@ -1,14 +1,21 @@
 ## Project Objectives
 
-The goal of this project is to design a classifier to use for sentiment analysis of product reviews. The training set consists of reviews written by Amazon customers for various food products. 
+The MNIST database contains binary images of handwritten digits commonly used to train image processing systems. The goal of this project is to experiment with the task of classifying these images into the correct digit.
 
-This project uses the scikit-learn package, the NumPy numerical toolbox and the matplotlib plotting toolbox.
+Part of the code for this project was written by the course staff. My tasks were the following: 
 
-Part of the code for this project was written by the course staff. Most of my work can be seen in the implementation of functions in project1.py and parameter tuning in main.py. My tasks were the following: 
+* Implement a linear regression and understand understand how it is inadequate for this task. This was implemented in linear\_regression.py and tested in main.py. 
 
-* Implement and compare three types of linear classifiers: the perceptron algorithm, the average perceptron algorithm, and the Pegasos algorithm.
+* Use scikit-learn's SVM for binary classification and multiclass classification. This was implemented in svm.py and tested in main.py.
 
-* Use your classifiers on the food review dataset, using some simple text features.
+* Implement your own softmax regression using gradient descent. This was implemented in softmax.py and tested in main.py.
 
-* Tune hyperparameters to maximize the performance of each model. 
+* Experiment with different hyperparameters, different labels and different features, including kernelized features. This can again be seen in softmax.py and main.py.
 
+* Perform dimensionality reduction using PCA by projecting the data onto the principal components and explore the effects on performance. This was implemented in features.py and tested in main.py.
+
+* Implement a direct mapping to the high-dimensional features using a cubic feature mapping and understand understand how it is inefficient for this task. This can also be seen in features.py.
+
+* Write a polynomial kernel function and a Gaussian RBF kernel function to map the features into d dimensional polynomial space and calculate the change in the test error. This was implemented in kernel.py and tested in main.py.
+
+In the next project, neural networks are applied to this task.
