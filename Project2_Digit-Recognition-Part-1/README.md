@@ -8,9 +8,7 @@ Part of the code for this project was written by the course staff. My tasks were
 
 * Use scikit-learn's SVM for binary classification and multiclass classification. This was implemented in svm.py and tested in main.py.
 
-* Implement your own softmax regression using gradient descent. This was implemented in softmax.py and tested in main.py.
-
-* Experiment with different hyperparameters and labels. This can again be seen in softmax.py and main.py.
+* Implement your own softmax regression using gradient descent and experiment with different hyperparameters and labels. This can be seen in softmax.py and in main.py.
 
 * Perform dimensionality reduction using PCA by projecting the data onto the principal components and explore the effects on performance. This was implemented in features.py and tested in main.py.
 
