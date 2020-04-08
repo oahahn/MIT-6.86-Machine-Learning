@@ -55,39 +55,56 @@ class NeuralNetwork():
     def train(self, x1, x2, y):
 
         ### Forward propagation ###
-        input_values = np.matrix([[x1],[x2]]) # 2 by 1
+        # x : [2 x 1]
+        input_values = np.matrix([[x1],[x2]])
 
         # Calculate the input and activation of the hidden layer
-        hidden_layer_weighted_input = # TODO (3 by 1 matrix)
-        hidden_layer_activation = # TODO (3 by 1 matrix)
-
-        output =  # TODO
-        activated_output = # TODO
+        # z1 = w1 * x + b1 : [3 x 1]
+        hidden_layer_weighted_input = self.input_to_hidden_weights * input_values + self.biases
+        # a1 = ReLU(z1) : [3 x 1]
+        vec_relu = np.vectorize(rectified_linear_unit)
+        hidden_layer_activation = vec_relu(hidden_layer_weighted_input)
+        # z2 = w2 * a1 : [1 x 1]
+        output = self.hidden_to_output_weights * hidden_layer_activation
+        # o = f(z2) : [1 x 1]
+        activated_output = output_layer_activation(output)
 
         ### Backpropagation ###
 
         # Compute gradients
-        output_layer_error = # TODO
-        hidden_layer_error = # TODO (3 by 1 matrix)
-
-        bias_gradients = # TODO
-        hidden_to_output_weight_gradients = # TODO
-        input_to_hidden_weight_gradients = # TODO
+        # delta^L = (o - y) * f'(z2)
+        output_layer_error = (activated_output - y) * output_layer_activation_derivative(output)
+        # delta^l = w2 * delta^L * ReLU'(z1)
+        vec_relu_derivative = np.vectorize(rectified_linear_unit_derivative)
+        hidden_layer_error = np.multiply((np.transpose(self.hidden_to_output_weights) * output_layer_error), vec_relu_derivative(hidden_layer_weighted_input))  # 3 by 1
+        # dC/db = delta2
+        bias_gradients = hidden_layer_error
+        # dC/dw2 = a1 * delta2
+        hidden_to_output_weight_gradients = np.transpose(hidden_layer_activation * output_layer_error)  # [3 by 1] * [1 by 1] = [3 by 1]
+        # dC/dw1 = x * delta1
+        input_to_hidden_weight_gradients = np.transpose(input_values * np.transpose(hidden_layer_error))  # = [2 by 1] * [1 by 3] = [2 by 3]
 
         # Use gradients to adjust weights and biases using gradient descent
-        self.biases = # TODO
-        self.input_to_hidden_weights = # TODO
-        self.hidden_to_output_weights = # TODO
+        self.biases = self.biases - self.learning_rate * bias_gradients
+        self.input_to_hidden_weights = self.input_to_hidden_weights - self.learning_rate * input_to_hidden_weight_gradients
+        self.hidden_to_output_weights = self.hidden_to_output_weights - self.learning_rate * hidden_to_output_weight_gradients
+
 
     def predict(self, x1, x2):
 
+        # x : [2 x 1]
         input_values = np.matrix([[x1],[x2]])
 
-        # Compute output for a single input(should be same as the forward propagation in training)
-        hidden_layer_weighted_input = # TODO
-        hidden_layer_activation = # TODO
-        output = # TODO
-        activated_output = # TODO
+        # Compute output for a single input
+        # z1 = w1 * x + b1 : [3 x 1]
+        hidden_layer_weighted_input = self.input_to_hidden_weights*input_values + self.biases
+        # a1 = ReLU(z1) : [3 x 1]
+        vec_relu = np.vectorize(rectified_linear_unit)
+        hidden_layer_activation = vec_relu(hidden_layer_weighted_input)
+        # z2 = w2 * a1 + b2 : [1 x 1]
+        output = self.hidden_to_output_weights * hidden_layer_activation
+        # o = f(z2) : [1 x 1]
+        activated_output = output_layer_activation(output)
 
         return activated_output.item()
 
@@ -114,4 +131,4 @@ x = NeuralNetwork()
 x.train_neural_network()
 
 # UNCOMMENT THE LINE BELOW TO TEST YOUR NEURAL NETWORK
-# x.test_neural_network()
+x.test_neural_network()
