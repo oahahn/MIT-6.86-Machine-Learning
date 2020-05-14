@@ -2,7 +2,7 @@ import numpy as np
 import kmeans
 import common
 import naive_em
-#import em
+import em
 
 X = np.loadtxt("toy_data.txt")
 
@@ -93,3 +93,28 @@ def run_bic():
 # EM for K = 2, seed = 2, ll = -1175.7146293666792, bic = -1195.039742579197
 # EM for K = 3, seed = 0, ll = -1138.8908996872672, bic = -1169.2589347355095
 # EM for K = 4, seed = 4, ll = -1138.601175699485, bic = -1180.012132583452
+
+X = np.loadtxt("netflix_incomplete.txt")
+
+def run_EM_Netflix():
+    """Runs the EM algorithm on the incomplete data matrix from Netflix ratings
+    """
+    for K in [1, 12]:
+        max_ll = None
+        best_seed = None
+        for seed in range(5):
+            mixture, post = common.init(X, K, seed)
+            mixture, post, ll = em.run(X, mixture, post)
+            if max_ll is None or ll > max_ll:
+                max_ll = ll
+                best_seed = seed
+
+        title = "EM for K = {}, seed = {}, ll = {}".format(K, best_seed, max_ll)
+        print(title)
+
+
+# run_EM_Netflix()
+
+# Output
+# EM for K = 1, seed = 0, ll = -1521060.9539852454
+# EM for K = 12, seed = 1, ll = -1390234.422346942
