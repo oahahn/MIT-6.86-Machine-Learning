@@ -63,3 +63,33 @@ def run_naive_em():
 # EM for K = 2, seed = 2, ll = -1175.7146293666792
 # EM for K = 3, seed = 0, ll = -1138.8908996872672
 # EM for K = 4, seed = 4, ll = -1138.601175699485
+
+
+def run_bic():
+    max_bic = None
+    for K in range(1, 5):
+        max_ll = None
+        best_seed = None
+        for seed in range(5):
+            mixture, post = common.init(X, K, seed)
+            mixture, post, ll = naive_em.run(X, mixture, post)
+            if max_ll is None or ll > max_ll:
+                max_ll = ll
+                best_seed = seed
+
+        mixture, post = common.init(X, K, best_seed)
+        mixture, post, ll = naive_em.run(X, mixture, post)
+        bic = common.bic(X, mixture, ll)
+        if max_bic is None or bic > max_bic:
+            max_bic = bic
+        title = "EM for K = {}, seed = {}, ll = {}, bic = {}".format(K, best_seed, ll, bic)
+        print(title)
+        common.plot(X, mixture, post, title)
+
+# run_bic()
+
+# Output
+# EM for K = 1, seed = 0, ll = -1307.2234317600937, bic = -1315.5056231368872
+# EM for K = 2, seed = 2, ll = -1175.7146293666792, bic = -1195.039742579197
+# EM for K = 3, seed = 0, ll = -1138.8908996872672, bic = -1169.2589347355095
+# EM for K = 4, seed = 4, ll = -1138.601175699485, bic = -1180.012132583452
