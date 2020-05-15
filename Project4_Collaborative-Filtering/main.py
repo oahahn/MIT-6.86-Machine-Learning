@@ -118,3 +118,15 @@ def run_EM_Netflix():
 # Output
 # EM for K = 1, seed = 0, ll = -1521060.9539852454
 # EM for K = 12, seed = 1, ll = -1390234.422346942
+
+def run_matrix_completion():
+    mixture, post = common.init(X, 12, 1)
+    mixture, post, ll = em.run(X, mixture, post)
+    X_pred = em.fill_matrix(X, mixture)
+    X_gold = np.loadtxt('netflix_complete.txt')
+    print("root mean squared error:", common.rmse(X_gold, X_pred))
+
+run_matrix_completion()
+
+# Output
+# root mean squared error: 0.4804908505400684
