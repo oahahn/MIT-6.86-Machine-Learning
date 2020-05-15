@@ -74,7 +74,7 @@ def mstep(X: np.ndarray, post: np.ndarray, mixture: GaussianMixture,
     """
     n, d = X.shape
     _, K = post.shape
-    mu_hat = np.zeros((K, d))
+    mu_hat = mixture.mu.copy()
     var_hat = np.zeros(K)
 
     n_hat = post.sum(axis=0)  # 1 x K
@@ -141,4 +141,27 @@ def fill_matrix(X: np.ndarray, mixture: GaussianMixture) -> np.ndarray:
     Returns
         np.ndarray: a (n, d) array with completed data
     """
-    raise NotImplementedError
+    n, d = X.shape
+    X_pred = X.copy()
+    K, _ = mixture.mu.shape
+
+    for i in range(n):
+        non_zero_X = X[i, :] != 0
+        zero_X = X[i, :] == 0
+        soft_counts = np.zeros(K)
+        for j in range(K):
+            # [i, non_zero_X] creates a new array of non-zero values
+            ll = log_gaussian(X[i, non_zero_X], mixture.mu[j, non_zero_X],
+                              mixture.var[j])
+            soft_counts[j] = np.log(mixture.p[j]) + ll
+        # Numerical optimisation trick to ensure numerical stability,
+        # still a K-dimensional vector that sums to 1
+        soft_counts = np.exp(soft_counts - logsumexp(soft_counts))
+        # Isolating the columns of mu where there are zeros for this data point
+        mean_cols = mixture.mu[:, zero_X]
+        # Using the mean values to make a prediction for the missing values
+        predictions = np.dot(soft_counts, mean_cols)
+        # Assigning these predictions to the missing values in X
+        X_pred[i, zero_X] = predictions
+
+    return X_pred
