@@ -74,8 +74,18 @@ def linear_q_learning(theta, current_state_vector, action_index, object_index,
     Returns:
         None
     """
-    # TODO Your code here
-    theta = None # TODO Your update here
+    q_values_next = theta @ next_state_vector
+    maxq_next = np.max(q_values_next)
+
+    q_values = theta @ current_state_vector
+    cur_index = tuple2index(action_index, object_index)
+    q_value_cur = q_values[cur_index]
+
+    target = reward + GAMMA * maxq_next * (1 - terminal)
+
+    theta[cur_index] = theta[cur_index] + ALPHA * (
+            target - q_value_cur) * current_state_vector
+
 # pragma: coderesponse end
 
 
