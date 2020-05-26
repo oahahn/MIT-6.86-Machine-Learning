@@ -95,32 +95,38 @@ def run_episode(for_training):
         None
     """
     epsilon = TRAINING_EP if for_training else TESTING_EP
-
-    epi_reward = None
-    # initialize for each episode
-    # TODO Your code here
+    gamma_step = 1
+    episode_reward = 0
 
     (current_room_desc, current_quest_desc, terminal) = framework.newGame()
-
     while not terminal:
         # Choose next action and execute
-        # TODO Your code here
-
+        cur_room_id = dict_room_desc[current_room_desc]
+        cur_quest_id = dict_quest_desc[current_quest_desc]
+        (action_index, object_index) = epsilon_greedy(cur_room_id, cur_quest_id,
+                                                      q_func, epsilon)
+        (next_room_desc, next_quest_desc, reward,
+         terminal) = framework.step_game(current_room_desc, current_quest_desc,
+                                         action_index, object_index)
         if for_training:
             # update Q-function.
-            # TODO Your code here
-            pass
+            next_room_id = dict_room_desc[next_room_desc]
+            next_quest_id = dict_quest_desc[next_quest_desc]
+            tabular_q_learning(q_func, cur_room_id, cur_quest_id, action_index,
+                               object_index, reward, next_room_id, next_quest_id,
+                               terminal)
 
         if not for_training:
             # update reward
-            # TODO Your code here
-            pass
+            episode_reward += gamma_step * reward
+            gamma_step *= GAMMA
 
         # prepare next step
-        # TODO Your code here
+        current_room_desc = next_room_desc
+        current_quest_desc = next_quest_desc
 
     if not for_training:
-        return epi_reward
+        return episode_reward
 
 
 # pragma: coderesponse end
@@ -180,3 +186,5 @@ if __name__ == '__main__':
     axis.set_title(('Tablular: nRuns=%d, Epilon=%.2f, Epi=%d, alpha=%.4f' %
                     (NUM_RUNS, TRAINING_EP, NUM_EPIS_TRAIN, ALPHA)))
     plt.show()
+
+run()
