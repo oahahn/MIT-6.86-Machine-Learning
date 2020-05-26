@@ -40,9 +40,18 @@ def epsilon_greedy(state_vector, epsilon):
     Returns:
         (int, int): the indices describing the action/object to take
     """
-    # TODO Your code here
-    action_index, object_index = None, None
-    return (action_index, object_index)
+
+    r_sample = np.random.random_sample()
+    if r_sample < epsilon:
+        action_index = np.random.randint(NUM_ACTIONS)
+        object_index = np.random.randint(NUM_OBJECTS)
+    else:
+        # Set all the requires_grad flags to false
+        with torch.no_grad():
+            q_value_action, q_value_object = model(state_vector)
+            action_index = torch.argmax(q_value_action)
+            object_index = torch.argmax(q_value_object)
+    return action_index, object_index
 
 class DQN(nn.Module):
     """A simple deep Q network implementation.
