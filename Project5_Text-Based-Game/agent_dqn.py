@@ -69,7 +69,6 @@ class DQN(nn.Module):
         return self.state2action(state), self.state2object(state)
 
 
-# pragma: coderesponse template
 def deep_q_learning(current_state_vector, action_index, object_index, reward,
                     next_state_vector, terminal):
     """Updates the weights of the DQN for a given transition
@@ -91,15 +90,16 @@ def deep_q_learning(current_state_vector, action_index, object_index, reward,
                          + q_values_object_next.max())
 
     q_value_cur_state = model(current_state_vector)
+    q_value_cur_state_action = 1 / 2 * (q_value_cur_state[0][action_index]
+                                        + q_value_cur_state[1][object_index])
 
-    # TODO Your code here
+    target = reward + GAMMA * maxq_next * (1 - terminal)
 
-    loss = None
+    loss = (q_value_cur_state_action - target).pow(2).mean()
 
     optimizer.zero_grad()
     loss.backward()
     optimizer.step()
-# pragma: coderesponse end
 
 
 def run_episode(for_training):
